@@ -1,6 +1,6 @@
 user: 'root'
 password: 'XXXX'
-dbname: 'demo'
+dbname: 'softcatala'
 host: 'localhost'
 port: 8086
 
