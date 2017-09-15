@@ -1,0 +1,6 @@
+user: 'root'
+password: 'XXXX'
+dbname: 'demo'
+host: 'localhost'
+port: 8086
+

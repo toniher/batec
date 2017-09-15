@@ -19,23 +19,32 @@
 
 from abc import ABCMeta, abstractmethod
 from influxdb import InfluxDBClient
+import yaml
 
 class DataImport(metaclass=ABCMeta):
+
+    def __init__(self):
+        self.load_yaml()
 
     @abstractmethod
     def extract_data(self):
         pass
 
+    def load_yaml(self):
+        stream = open("influx-db.yaml", "r")
+        values = yaml.load(stream)
+        self.user = values['user']
+        self.password = values['password']
+        self.dbname = values['dbname']
+        self.host = values['host']
+        self.port = values['port']
+       
     def load_data(self, json):
-        user = 'root'
-        password = 'root'
-        dbname = 'demo'
-        host='localhost'
-        port=8086
-        client = InfluxDBClient(host, port, user, password, dbname)
+        client = InfluxDBClient(self.host, self.port, self.user, self.password, self.dbname)
         print("wrote: " + str(json))
-        client.write_points(json)
- 
+        result = client.write_points(json)
+        print("result: " + str(result))
+
     @abstractmethod
     def do(self):
         pass
