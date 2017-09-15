@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Jordi Mas i Hernandez <jmas@softcatala.org>
@@ -25,7 +25,7 @@ def main():
 
     print("Imports data into InfluxDB")
     data = Catalanitzador()
-    data.obtain_data()
+    data.do()
 
 if __name__ == "__main__":
     main()

@@ -18,9 +18,26 @@
 #  Boston, MA 02110-1301, USA.
 
 from abc import ABCMeta, abstractmethod
+from influxdb import InfluxDBClient
 
 class DataImport(metaclass=ABCMeta):
 
     @abstractmethod
-    def obtain_data(self):
+    def extract_data(self):
         pass
+
+    def load_data(self, json):
+        user = 'root'
+        password = 'root'
+        dbname = 'demo'
+        host='localhost'
+        port=8086
+        client = InfluxDBClient(host, port, user, password, dbname)
+        print("wrote: " + str(json))
+        client.write_points(json)
+ 
+    @abstractmethod
+    def do(self):
+        pass
+
+

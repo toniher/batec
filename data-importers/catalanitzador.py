@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Jordi Mas i Hernandez <jmas@softcatala.org>
@@ -20,16 +20,36 @@
 
 import urllib.request, urllib.parse, urllib.error
 from dataimport import DataImport
-
+from datetime import datetime
 
 class Catalanitzador(DataImport):
 
-    def obtain_data(self):
+    def extract_data(self):
         url = "https://www.softcatala.org/catalanitzador/response.php"
         print("url->" + url)
 
         response = urllib.request.urlopen(url)
         data = response.read()
-        print("Returned data:" + str(data))
-        return data
+        value = int(data)
+        print("Returned data:" + str(value))
+        return value
+
+    def transform_data(self, data):
+        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        json_body = [
+            {
+                "time" : current_time,
+                "measurement": "catalanitzador",
+                "fields": {
+                    "total_downloads" : data
+                }
+            }
+        ]
+        return json_body
+
+    def do(self):
+        data = self.extract_data()
+        json = self.transform_data(data)
+        self.load_data(json)
 
