@@ -25,10 +25,11 @@ from programs import Programs
 def main():
 
     print("Imports data into InfluxDB")
-    data = Catalanitzador()
-    data.do()
-    data = Programs()
-    data.do()
+
+    importers = [Catalanitzador(), Programs()]
+
+    for importer in importers:
+        importer.do()
 
 if __name__ == "__main__":
     main()
