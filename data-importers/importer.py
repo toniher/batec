@@ -20,11 +20,14 @@
 
 
 from catalanitzador import Catalanitzador
+from programs import Programs
 
 def main():
 
     print("Imports data into InfluxDB")
     data = Catalanitzador()
+    data.do()
+    data = Programs()
     data.do()
 
 if __name__ == "__main__":

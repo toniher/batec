@@ -19,36 +19,50 @@
 # Boston, MA 02111-1307, USA.
 
 import urllib.request, urllib.parse, urllib.error
-from dataimport import DataImport
-from datetime import datetime
+import json
 
-class Catalanitzador(DataImport):
+from dataimport import DataImport
+from datetime import datetime, timedelta
+
+class Programs(DataImport):
 
     def extract_data(self):
-        url = "https://www.softcatala.org/catalanitzador/response.php"
+        today_date = datetime.utcnow()
+        yesterday_date = today_date - timedelta(days=1)
+        today = today_date.strftime('%Y-%m-%d')
+        yesterday = yesterday_date.strftime('%Y-%m-%d')
+
+        url = "https://www.softcatala.org/top_so.php?type=top&from={0}&to={1}&count=99999"
+        url = url.format(yesterday, today)
         print("url->" + url)
 
         response = urllib.request.urlopen(url)
-        data = response.read()
-        value = int(data)
-        return value
+        json_payload = json.loads(response.read().decode(response.info().get_param('charset') or 'utf-8'))
+        counts = {}
+
+        for platform in json_payload:
+            total = 0
+
+            for program in json_payload[platform]:
+                cnt = int(program['total'])
+                total = total + cnt
+
+            counts[platform] = total
+
+        return counts
 
     def transform_data(self, data):
         current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-        json_body = [
-            {
-                "time" : current_time,
-                "measurement": "catalanitzador",
-                "fields": {
-                    "total_downloads" : data
-                }
-            }
-        ]
-        return json_body
+        json_dict = {}
+        json_dict['time'] = current_time
+        json_dict['measurement'] = 'programs'
+        json_dict['fields'] = data
+        json_list = []
+        json_list.append(json_dict)
+        return json_list
 
     def do(self):
         data = self.extract_data()
         json = self.transform_data(data)
         self.load_data(json)
-
