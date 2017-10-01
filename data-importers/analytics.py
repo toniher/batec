@@ -71,7 +71,7 @@ class Analytics(DataImport):
     def extract_data(self):
 
         scope = ['https://www.googleapis.com/auth/analytics.readonly']
-        key_file_location = 'client_secrets-analytics.json'
+        key_file_location = 'client_secrets_analytics.json'
 
         # Authenticate and construct service.
         service = self.get_service('analytics', 'v3', scope, key_file_location)
