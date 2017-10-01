@@ -33,7 +33,7 @@ class AdSense(DataImport):
     def init(self, name, version, doc, filename, discovery_filename, scope):
         # Name of a file containing the OAuth 2.0 information details
         client_secrets = os.path.join(os.path.dirname(filename),
-                                      'client_secrets-adsense.json')
+                                      'client_secrets_adsense.json')
 
         # Set up a Flow object to be used if we need to authenticate.
         flow = client.flow_from_clientsecrets(client_secrets, scope=scope,
