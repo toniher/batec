@@ -22,12 +22,13 @@
 from catalanitzador import Catalanitzador
 from programs import Programs
 from adsense import AdSense
+from analytics import Analytics
 
 def main():
 
     print("Imports data into InfluxDB")
 
-    importers = [Catalanitzador(), Programs(), AdSense()]
+    importers = [Catalanitzador(), Programs(), AdSense(), Analytics()]
     for importer in importers:
         importer.do()
 
