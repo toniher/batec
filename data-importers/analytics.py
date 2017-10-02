@@ -85,14 +85,13 @@ class Analytics(DataImport):
 
     def transform_data(self, data):
         current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
         json_body = [
             {
                 "time": current_time,
                 "measurement": "analytics",
                 "fields": {
-                    "sessions": data['sessions'],
-                    "page_views": data['page_views'],
+                    "sessions": int(data['sessions']),
+                    "page_views": int(data['page_views']),
                 }
             }
         ]
