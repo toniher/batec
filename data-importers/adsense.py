@@ -108,8 +108,8 @@ class AdSense(DataImport):
                 "time": current_time,
                 "measurement": "adsense",
                 "fields": {
-                    "page_views": data['page_views'],
-                    "earnings": data['earnings'],
+                    "page_views": int(data['page_views']),
+                    "earnings": float(data['earnings']),
                 }
             }
         ]
