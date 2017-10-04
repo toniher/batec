@@ -96,8 +96,3 @@ class Analytics(DataImport):
             }
         ]
         return json_body
-
-    def do(self):
-        data = self.extract_data()
-        json = self.transform_data(data)
-        self.load_data(json)

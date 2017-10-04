@@ -61,8 +61,3 @@ class Programs(DataImport):
         json_list = []
         json_list.append(json_dict)
         return json_list
-
-    def do(self):
-        data = self.extract_data()
-        json = self.transform_data(data)
-        self.load_data(json)
