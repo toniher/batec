@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 class Programs(DataImport):
 
     def extract_data(self):
-        today_date = datetime.utcnow()
+        today_date = datetime.now()
         yesterday_date = today_date - timedelta(days=1)
         today = today_date.strftime('%Y-%m-%d')
         yesterday = yesterday_date.strftime('%Y-%m-%d')
