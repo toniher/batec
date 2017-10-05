@@ -20,8 +20,8 @@
 
 from dataimport import DataImport
 from datetime import datetime
-from adsense_util import get_account_id
-from adsense_util_data_collator import DataCollator
+from adsense_utils.adsense_util import get_account_id
+from adsense_utils.adsense_util_data_collator import DataCollator
 from googleapiclient import discovery
 from oauth2client import client, file, tools
 import httplib2
