@@ -20,6 +20,7 @@
 from abc import ABCMeta, abstractmethod
 from influxdb import InfluxDBClient
 import yaml
+import datetime
 
 class DataImport(metaclass=ABCMeta):
 
@@ -48,6 +49,9 @@ class DataImport(metaclass=ABCMeta):
     @abstractmethod
     def do(self):
         pass
+
+    def store_time(self):
+        return datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
     def do(self):
         data = self.extract_data()

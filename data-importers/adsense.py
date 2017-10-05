@@ -101,11 +101,9 @@ class AdSense(DataImport):
                   'please re-run the application to re-authorize')
 
     def transform_data(self, data):
-        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
         json_body = [
             {
-                "time": current_time,
+                "time": self.store_time(),
                 "measurement": "adsense",
                 "fields": {
                     "page_views": int(data['page_views']),

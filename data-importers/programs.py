@@ -52,10 +52,8 @@ class Programs(DataImport):
         return counts
 
     def transform_data(self, data):
-        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
         json_dict = {}
-        json_dict['time'] = current_time
+        json_dict['time'] = self.store_time()
         json_dict['measurement'] = 'programs'
         json_dict['fields'] = data
         json_list = []

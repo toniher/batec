@@ -34,11 +34,9 @@ class Catalanitzador(DataImport):
         return value
 
     def transform_data(self, data):
-        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
         json_body = [
             {
-                "time" : current_time,
+                "time" : self.store_time(),
                 "measurement": "catalanitzador",
                 "fields": {
                     "total_downloads" : data
