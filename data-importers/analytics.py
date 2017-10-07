@@ -19,7 +19,7 @@
 # Boston, MA 02111-1307, USA.
 
 from dataimport import DataImport
-from datetime import datetime
+from datetime import datetime, timedelta
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -61,14 +61,14 @@ class Analytics(DataImport):
 
         return None
 
-    def _get_results(self, service, profile_id):
+    def _get_results(self, service, profile_id, date):
         return service.data().ga().get(
             ids='ga:' + profile_id,
-            start_date='yesterday',
-            end_date='yesterday',
+            start_date=date,
+            end_date=date,
             metrics='ga:sessions, ga:pageviews').execute()
 
-    def extract_data(self):
+    def extract_data(self, day):
 
         scope = ['https://www.googleapis.com/auth/analytics.readonly']
         key_file_location = 'client_secrets_analytics.json'
@@ -76,17 +76,17 @@ class Analytics(DataImport):
         # Authenticate and construct service.
         service = self._get_service('analytics', 'v3', scope, key_file_location)
         profile = self._get_first_profile_id(service)
-        results = self._get_results(service, profile)
+        results = self._get_results(service, profile, day)
 
         data = {}
         data['sessions'] = results.get('rows')[0][0]
         data['page_views'] = results.get('rows')[0][1]
         return data
 
-    def transform_data(self, data):
+    def transform_data(self, data, date):
         json_body = [
             {
-                "time": self.store_time(),
+                "time": date,
                 "measurement": "analytics",
                 "fields": {
                     "sessions": int(data['sessions']),
@@ -95,3 +95,18 @@ class Analytics(DataImport):
             }
         ]
         return json_body
+
+
+    def do(self):
+        start_date = '2017-01-01'
+        days = 270
+
+        for day in range(0, days):
+            date = datetime.strptime(start_date, '%Y-%m-%d')
+            day_date = date + timedelta(days=day)
+            day_str = day_date.strftime('%Y-%m-%d')
+            print(day_str)
+
+            data = self.extract_data(day_str)
+            json = self.transform_data(data, day_date)
+            self.load_data(json)

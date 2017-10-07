@@ -19,7 +19,7 @@
 # Boston, MA 02111-1307, USA.
 
 from dataimport import DataImport
-from datetime import datetime
+from datetime import datetime, timedelta
 from adsense_utils.adsense_util import get_account_id
 from adsense_utils.adsense_util_data_collator import DataCollator
 from googleapiclient import discovery
@@ -63,7 +63,7 @@ class AdSense(DataImport):
                     http=http)
         return service
 
-    def extract_data(self):
+    def extract_data(self, day):
 
         # Authenticate and construct service.
         service = self._init('adsense', 'v1.4', __doc__, __file__, None,
@@ -81,7 +81,7 @@ class AdSense(DataImport):
                     accountId=account_id, savedReportId=saved_report_id).execute()
             else:
                 result = service.accounts().reports().generate(
-                  accountId=account_id, startDate='today-1d', endDate='today-1d',
+                  accountId=account_id, startDate=day, endDate=day,
                   metric=['PAGE_VIEWS', 'EARNINGS'],
                   dimension=['DATE'],
                   sort=['+DATE']).execute()
@@ -100,10 +100,10 @@ class AdSense(DataImport):
             print('The credentials have been revoked or expired,'
                   'please re-run the application to re-authorize')
 
-    def transform_data(self, data):
+    def transform_data(self, data, date):
         json_body = [
             {
-                "time": self.store_time(),
+                "time": date,
                 "measurement": "adsense",
                 "fields": {
                     "page_views": int(data['page_views']),
@@ -112,3 +112,18 @@ class AdSense(DataImport):
             }
         ]
         return json_body
+
+    def do(self):
+        start_date = '2017-01-01'
+        days = 270
+
+        for day in range(0, days):
+            date = datetime.strptime(start_date, '%Y-%m-%d')
+            day_date = date + timedelta(days=day)
+            day_str = day_date.strftime('%Y-%m-%d')
+            print(day_str)
+
+            data = self.extract_data(day_str)
+            json = self.transform_data(data, day_date)
+            self.load_data(json)
+
