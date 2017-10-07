@@ -29,7 +29,7 @@ def main():
 
     print("Imports data into InfluxDB")
 
-    importers = [Analytics(), Adsense()]
+    importers = [Analytics(), AdSense()]
     for importer in importers:
         importer.do()
 
