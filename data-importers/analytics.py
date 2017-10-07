@@ -87,7 +87,7 @@ class Analytics(DataImport):
         json_body = [
             {
                 "time": date,
-                "measurement": "analytics",
+                "measurement": "google_analytics",
                 "fields": {
                     "sessions": int(data['sessions']),
                     "page_views": int(data['page_views']),

@@ -104,7 +104,7 @@ class AdSense(DataImport):
         json_body = [
             {
                 "time": date,
-                "measurement": "adsense",
+                "measurement": "google_adsense",
                 "fields": {
                     "page_views": int(data['page_views']),
                     "earnings": float(data['earnings']),
