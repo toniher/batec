@@ -26,7 +26,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 class Analytics(DataImport):
 
-    def get_service(self, api_name, api_version, scope, key_file_location):
+    def _get_service(self, api_name, api_version, scope, key_file_location):
 
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
             key_file_location, scopes=scope)
@@ -35,7 +35,7 @@ class Analytics(DataImport):
 
         return service
 
-    def get_first_profile_id(self, service):
+    def _get_first_profile_id(self, service):
         accounts = service.management().accounts().list().execute()
 
         if accounts.get('items'):
@@ -61,7 +61,7 @@ class Analytics(DataImport):
 
         return None
 
-    def get_results(self, service, profile_id):
+    def _get_results(self, service, profile_id):
         return service.data().ga().get(
             ids='ga:' + profile_id,
             start_date='yesterday',
@@ -74,9 +74,9 @@ class Analytics(DataImport):
         key_file_location = 'client_secrets_analytics.json'
 
         # Authenticate and construct service.
-        service = self.get_service('analytics', 'v3', scope, key_file_location)
-        profile = self.get_first_profile_id(service)
-        results = self.get_results(service, profile)
+        service = self._get_service('analytics', 'v3', scope, key_file_location)
+        profile = self._get_first_profile_id(service)
+        results = self._get_results(service, profile)
 
         data = {}
         data['sessions'] = results.get('rows')[0][0]

@@ -30,7 +30,7 @@ import os
 
 class AdSense(DataImport):
 
-    def init(self, name, version, doc, filename, discovery_filename, scope):
+    def _init(self, name, version, doc, filename, discovery_filename, scope):
         # Name of a file containing the OAuth 2.0 information details
         client_secrets = os.path.join(os.path.dirname(filename),
                                       'client_secrets_adsense.json')
@@ -66,7 +66,7 @@ class AdSense(DataImport):
     def extract_data(self):
 
         # Authenticate and construct service.
-        service = self.init('adsense', 'v1.4', __doc__, __file__, None,
+        service = self._init('adsense', 'v1.4', __doc__, __file__, None,
           'https://www.googleapis.com/auth/adsense.readonly')
 
         # Process flags and read their values.
