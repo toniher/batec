@@ -26,7 +26,7 @@ from dataimport import DataImport
 class TM(DataImport):
 
     def extract_data(self):
-        url = "https://www.softcatala.org/recursos-dev/tm/api/stats"
+        url = "https://www.softcatala.org/recursos/tm/api/stats"
         print("url->" + url)
 
         response = urllib.request.urlopen(url)
