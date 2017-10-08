@@ -35,7 +35,12 @@ def main():
                  TTS(), TM(), DictMutilingual()]
 
     for importer in importers:
-        importer.do()
+        try:
+            importer.do()
+
+        except Exception as e:
+            msg = "Error at importer '{0}': {1}"
+            print(msg.format(type(importer).__name__, e))
 
 if __name__ == "__main__":
     main()
