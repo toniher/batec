@@ -25,13 +25,14 @@ from adsense import AdSense
 from analytics import Analytics
 from tts import TTS
 from tm import TM
+from dictmutilingual import DictMutilingual
 
 def main():
 
     print("Imports data into InfluxDB")
 
     importers = [Catalanitzador(), Programs(), AdSense(), Analytics(),
-                 TTS(), TM()]
+                 TTS(), TM(), DictMutilingual()]
 
     for importer in importers:
         importer.do()
