@@ -26,13 +26,14 @@ from analytics import Analytics
 from tts import TTS
 from tm import TM
 from dictmutilingual import DictMutilingual
+from criteo import Criteo
 
 def main():
 
     print("Imports data into InfluxDB")
 
     importers = [Catalanitzador(), Programs(), AdSense(), Analytics(),
-                 TTS(), TM(), DictMutilingual()]
+                 TTS(), TM(), DictMutilingual(), Criteo()]
 
     for importer in importers:
         try:
