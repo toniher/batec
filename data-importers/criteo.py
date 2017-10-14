@@ -24,6 +24,7 @@ import urllib.request, urllib.parse, urllib.error
 from dataimport import DataImport
 from datetime import datetime, timedelta
 
+
 class Criteo(DataImport):
 
     def load_criteo_yaml(self):
@@ -61,11 +62,11 @@ class Criteo(DataImport):
     def transform_data(self, data):
         json_body = [
             {
-                "time" : self.store_time(),
+                "time": self.store_time(),
                 "measurement": "criteo",
                 "fields": {
-                    "revenue" : float(data['revenue']),
-                    "impressions" : int(data['impressions'])
+                    "revenue": float(data['revenue']),
+                    "impressions": int(data['impressions'])
                 }
             }
         ]
