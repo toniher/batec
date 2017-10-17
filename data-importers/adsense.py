@@ -122,7 +122,7 @@ class AdSense(DataImport):
 
     def do(self):
         start_date = '2017-01-01'
-        days = 270
+        days = 365
 
         for day in range(0, days):
             date = datetime.strptime(start_date, '%Y-%m-%d')

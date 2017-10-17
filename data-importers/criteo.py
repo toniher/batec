@@ -32,11 +32,9 @@ class Criteo(DataImport):
             values = yaml.load(stream)
             self.api_token = values['api_token']
 
-    def extract_data(self):
+    def extract_data(self, day):
         self.load_criteo_yaml()
-        today_date = datetime.now()
-        yesterday_date = today_date - timedelta(days=1)
-        yesterday = yesterday_date.strftime('%Y-%m-%d')
+        yesterday = day
 
         baseurl = 'https://publishers.criteo.com//api/2.0/'
         metrics = 'PublisherName;Date;TotalImpression;Revenue'
@@ -59,10 +57,10 @@ class Criteo(DataImport):
         data['impressions'] = impressions
         return data
 
-    def transform_data(self, data):
+    def transform_data(self, data, date):
         json_body = [
             {
-                "time": self.store_time(),
+                "time": date,
                 "measurement": "criteo",
                 "fields": {
                     "revenue": float(data['revenue']),
@@ -70,7 +68,7 @@ class Criteo(DataImport):
                 }
             },
             {
-                "time": self.store_time(),
+                "time": date,
                 "measurement": "earnings",
                 "fields": {
                     "criteo": float(data['revenue']),
@@ -78,3 +76,17 @@ class Criteo(DataImport):
             }
         ]
         return json_body
+
+    def do(self):
+        start_date = '2017-01-01'
+        days = 365
+
+        for day in range(0, days):
+            date = datetime.strptime(start_date, '%Y-%m-%d')
+            day_date = date + timedelta(days=day)
+            day_str = day_date.strftime('%Y-%m-%d')
+            print(day_str)
+
+            data = self.extract_data(day_str)
+            json = self.transform_data(data, day_date)
+            self.load_data(json)
