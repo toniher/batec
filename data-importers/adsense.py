@@ -109,6 +109,13 @@ class AdSense(DataImport):
                     "page_views": int(data['page_views']),
                     "earnings": float(data['earnings']),
                 }
+            },
+            {
+                "time": self.store_time(),
+                "measurement": "earnings",
+                "fields": {
+                    "adsense": float(data['earnings']),
+                }
             }
         ]
         return json_body

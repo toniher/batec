@@ -68,6 +68,13 @@ class Criteo(DataImport):
                     "revenue": float(data['revenue']),
                     "impressions": int(data['impressions'])
                 }
+            },
+            {
+                "time": self.store_time(),
+                "measurement": "earnings",
+                "fields": {
+                    "criteo": float(data['revenue']),
+                }
             }
         ]
         return json_body
