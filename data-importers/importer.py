@@ -24,6 +24,9 @@ from programs import Programs
 from adsense import AdSense
 from analytics import Analytics
 from tts import TTS
+from tm import TM
+from dictmutilingual import DictMutilingual
+from criteo import Criteo
 
 def main():
 
@@ -31,7 +34,12 @@ def main():
 
     importers = [Analytics(), AdSense()]
     for importer in importers:
-        importer.do()
+        try:
+            importer.do()
+
+        except Exception as e:
+            msg = "Error at importer '{0}': {1}"
+            print(msg.format(type(importer).__name__, e))
 
 if __name__ == "__main__":
     main()
