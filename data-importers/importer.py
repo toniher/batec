@@ -18,7 +18,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-
+from optparse import OptionParser
 from catalanitzador import Catalanitzador
 from programs import Programs
 from adsense import AdSense
@@ -28,20 +28,49 @@ from tm import TM
 from dictmutilingual import DictMutilingual
 from criteo import Criteo
 
+
+def read_parameters():
+    parser = OptionParser()
+    parser.add_option(
+        '-i',
+        '--importers',
+        action='store',
+        type='string',
+        dest='use_importers',
+        default='',
+        help='To restrict the execution of importers to a comma separated '
+        'given list e.g.: (tts, criteo)'
+    )
+
+    (options, args) = parser.parse_args()
+
+    use_importers = ''
+    if options.use_importers:
+        use_importers = options.use_importers.lower().split(',')
+
+    return use_importers
+
+
 def main():
 
-    print("Imports data into InfluxDB")
+    print("Imports data into InfluxDB. Use --help for parameters")
+
+    use_importers = read_parameters()
 
     importers = [Catalanitzador(), Programs(), AdSense(), Analytics(),
                  TTS(), TM(), DictMutilingual(), Criteo()]
 
     for importer in importers:
         try:
+            if use_importers and type(importer).__name__.lower() not in use_importers:
+                continue
+
             importer.do()
 
         except Exception as e:
             msg = "Error at importer '{0}': {1}"
             print(msg.format(type(importer).__name__, e))
+
 
 if __name__ == "__main__":
     main()
