@@ -19,54 +19,16 @@
 # Boston, MA 02111-1307, USA.
 
 from dataimport import DataImport
-from datetime import datetime
 from adsense_utils.adsense_util import get_account_id
 from adsense_utils.adsense_util_data_collator import DataCollator
-from googleapiclient import discovery
-from oauth2client import client, file, tools
-import httplib2
-import os
+from adsense_utils.adsense_service import AdSenseService
+from oauth2client import client
 
 
 class AdSense(DataImport):
 
-    def _init(self, name, version, doc, filename, discovery_filename, scope):
-        # Name of a file containing the OAuth 2.0 information details
-        client_secrets = os.path.join(os.path.dirname(filename),
-                                      'client_secrets_adsense.json')
-
-        # Set up a Flow object to be used if we need to authenticate.
-        flow = client.flow_from_clientsecrets(client_secrets, scope=scope,
-            message=tools.message_if_missing(client_secrets))
-
-        # Prepare credentials, and authorize HTTP object with them.
-        # If the credentials don't exist or are invalid run through the native client
-        # flow. The Storage object will ensure that if successful the good
-        # credentials will get written back to a file.
-        storage = file.Storage(name + '.dat')
-        credentials = storage.get()
-        if credentials is None or credentials.invalid:
-            flags = None
-            credentials = tools.run_flow(flow, storage, flags)
-
-        http = credentials.authorize(http=httplib2.Http())
-
-        if discovery_filename is None:
-            # Construct a service object via the discovery service.
-            service = discovery.build(name, version, http=http)
-        else:
-            # Construct a service object using a local discovery document file.
-            with open(discovery_filename) as discovery_file:
-                service = discovery.build_from_document(
-                    discovery_file.read(),
-                    base='https://www.googleapis.com/',
-                    http=http)
-        return service
-
     def extract_data(self):
-
-        # Authenticate and construct service.
-        service = self._init('adsense', 'v1.4', __doc__, __file__, None,
+        service = AdSenseService.get('adsense', 'v1.4', __doc__, __file__, None,
           'https://www.googleapis.com/auth/adsense.readonly')
 
         # Process flags and read their values.
