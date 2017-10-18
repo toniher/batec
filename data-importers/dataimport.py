@@ -25,13 +25,13 @@ import datetime
 class DataImport(metaclass=ABCMeta):
 
     def __init__(self):
-        self.load_yaml()
+        self._load_yaml()
 
     @abstractmethod
     def extract_data(self):
         pass
 
-    def load_yaml(self):
+    def _load_yaml(self):
         stream = open("influx-db.yaml", "r")
         values = yaml.load(stream)
         self.user = values['user']
