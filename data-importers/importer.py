@@ -27,6 +27,7 @@ from tts import TTS
 from tm import TM
 from dictmutilingual import DictMutilingual
 from criteo import Criteo
+from traductor import Traductor
 
 
 def read_parameters():
@@ -58,7 +59,7 @@ def main():
     use_importers = read_parameters()
 
     importers = [Catalanitzador(), Programs(), AdSense(), Analytics(),
-                 TTS(), TM(), DictMutilingual(), Criteo()]
+                 TTS(), TM(), DictMutilingual(), Criteo(), Traductor()]
 
     for importer in importers:
         try:
