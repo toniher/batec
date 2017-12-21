@@ -38,8 +38,12 @@ class Traductor(DataImport):
 
     def transform_data(self, data):
 
+        today_date = datetime.utcnow()
+        yesterday_date = today_date - timedelta(days=1)
+        yesterday = yesterday_date.strftime('%Y-%m-%dT12:00:00Z')
+
         sources = {
-                "time": self.store_time(),
+                "time": yesterday,
                 "measurement": "traductor_source",
                 "fields": { }
         }
@@ -48,7 +52,7 @@ class Traductor(DataImport):
             sources['fields'][k] = v
 
         langs = {
-                "time": self.store_time(),
+                "time": yesterday,
                 "measurement": "traductor_lang",
                 "fields": { }
         }
@@ -57,7 +61,7 @@ class Traductor(DataImport):
             langs['fields'][k] = v
 
         totals = {
-            "time": self.store_time(),
+            "time": yesterday,
             "measurement": "traductor_total",
             "fields": { 'total_translations' : data['total'] }
         }
