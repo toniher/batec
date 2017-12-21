@@ -44,7 +44,7 @@ class Traductor(DataImport):
                 "fields": { }
         }
 
-        for k,v in data['srcstats']:
+        for k,v in data['srcstats'].items():
             sources['fields'][k] = v
 
         langs = {
@@ -53,7 +53,7 @@ class Traductor(DataImport):
                 "fields": { }
         }
 
-        for k,v in data['langstats']:
+        for k,v in data['langstats'].items():
             langs['fields'][k] = v
 
         totals = {
