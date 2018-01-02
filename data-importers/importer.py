@@ -18,6 +18,8 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+import traceback
+import sys
 from optparse import OptionParser
 from catalanitzador import Catalanitzador
 from programs import Programs
@@ -71,6 +73,8 @@ def main():
         except Exception as e:
             msg = "Error at importer '{0}': {1}"
             print(msg.format(type(importer).__name__, e))
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
 
 
 if __name__ == "__main__":
