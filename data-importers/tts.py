@@ -31,7 +31,7 @@ class TTS(DataImport):
         yesterday_date = today_date - timedelta(days=1)
         yesterday = yesterday_date.strftime('%Y-%m-%d')
 
-        url = "https://www.softcatala.org/veu/stats/?date={0}"
+        url = "https://www.softcatala.org/veu/speak/stats/?date={0}"
         url = url.format(yesterday)
         print("url->" + url)
 
