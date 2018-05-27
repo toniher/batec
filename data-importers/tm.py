@@ -21,12 +21,18 @@
 import urllib.request, urllib.parse, urllib.error
 import json
 from dataimport import DataImport
+from datetime import datetime, timedelta
 
 
 class TM(DataImport):
 
     def extract_data(self):
-        url = "https://www.softcatala.org/recursos/tm/api/stats"
+
+        today_date = datetime.now()
+        yesterday_date = today_date - timedelta(days=1)
+        yesterday = yesterday_date.strftime('%Y-%m-%d')
+
+        url = "https://www.softcatala.org/recursos/tm/api/stats?date={0}".format(yesterday)
         print("url->" + url)
 
         response = urllib.request.urlopen(url)
@@ -34,6 +40,7 @@ class TM(DataImport):
         data = {}
         data['total_words'] = json_payload['total_words']
         data['projects'] = json_payload['projects']
+        data['searches'] = json_payload['searches']
         return data
 
     def transform_data(self, data):
@@ -45,6 +52,7 @@ class TM(DataImport):
                 "fields": {
                     "total_words": int(data['total_words']),
                     "projects": int(data['projects']),
+                    "searches": int(data['searches']),
                 }
             }
         ]
